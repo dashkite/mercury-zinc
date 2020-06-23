@@ -12,6 +12,14 @@ Zinc =
       throw failure "no current profile" if !profile?
       profile.receive key, context.json.directory
 
+  claimP: do ({profile, path, claim} = {}) ->
+    ({url, parameters, method}) ->
+      profile = await Profile.current
+      throw failure "no current profile" if !profile?
+      # TODO consider another term for path
+      path = url.pathname + url.search
+      (profile.lookup {path, parameters, method})?
+
   claim: do ({profile, path, claim} = {}) ->
     ({url, parameters, method}) ->
       profile = await Profile.current

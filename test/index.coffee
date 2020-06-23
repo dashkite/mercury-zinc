@@ -12,7 +12,7 @@ import Profile from "@dashkite/zinc"
 
 import Zinc from "../src"
 
-{grants, claim, sigil} = Zinc
+{grants, claim, claimP, sigil} = Zinc
 
 global.fetch = fetch
 
@@ -26,6 +26,7 @@ do ->
     test "basic test", ->
       assert grants
       assert claim
+      assert claimP
       assert sigil
   ]
 

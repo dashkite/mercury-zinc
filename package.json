@@ -33,7 +33,7 @@
     "source-map-support": "^0.5.19"
   },
   "dependencies": {
-    "@dashkite/zinc": "0.0.9",
+    "@dashkite/zinc": "0.0.10",
     "panda-garden": "^5.0.0"
   }
 }
