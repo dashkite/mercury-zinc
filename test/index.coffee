@@ -18,7 +18,7 @@ global.fetch = fetch
 
 do ->
 
-  Profile.current = await Profile.create
+  Profile.current = await Profile.create "localhost",
     nickname: faker.internet.userName()
 
   print await test "Mercury-Zinc: HTTP Combinators",  [
