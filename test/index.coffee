@@ -8,26 +8,40 @@ import "./custom-event"
 import "./local-storage"
 
 import faker from "faker"
+import {flow} from "panda-garden"
+import {titleCase, property} from "panda-parchment"
 import Profile from "@dashkite/zinc"
 
-import Zinc from "../src"
-
-{grants, claim, claimP, sigil} = Zinc
+import Room from "./room"
 
 global.fetch = fetch
 
 do ->
 
-  Profile.current = await Profile.create "localhost",
+  Profile.current = await Profile.create "http-test.dashkite.com",
     nickname: faker.internet.userName()
 
-  print await test "Mercury-Zinc: HTTP Combinators",  [
+  print await test "Mercury: HTTP Combinators",  [
 
-    test "basic test", ->
-      assert grants
-      assert claim
-      assert claimP
-      assert sigil
+    test
+      description: "sky test"
+      wait: false
+      ->
+        {room} = await Room.create
+          title: titleCase faker.lorem.words()
+          blurb: faker.lorem.sentence()
+        assert room.created
+
+        await Room.patch
+          title: titleCase faker.lorem.words()
+          address: room.address
+
+        messages = await Room.Messages.get
+          address: room.address
+          after: (new Date).toISOString()
+        assert Array.isArray messages
+
+        assert.rejects (-> Room.Messages.put()), /not allowed/
   ]
 
   process.exit if success then 0 else 1

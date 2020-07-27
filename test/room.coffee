@@ -6,30 +6,20 @@ import fetch from "node-fetch"
 import {identity, tee, flow} from "panda-garden"
 import {property} from "panda-parchment"
 import Profile from "@dashkite/zinc"
+import {use, parameters, content, accept, from, data, authorize,
+  cache, text, json, Fetch} from "@dashkite/mercury"
+import Zinc from "../src/index"
 
-import Sky from "../src/index"
-import {cast, use, parameters, content, accept, authorize,
-  cache, text, json, data, Fetch} from "../src/mercury"
-import Zinc from "../src/zinc"
+import Sky from "@dashkite/mercury-sky"
 
 global.fetch = fetch
-
-{convert, randomBytes} = Profile.Confidential
 
 {discover, resource, method, request} = Sky
 {grants, claim, sigil} = Zinc
 
-
-generateAddress = ->
-  convert
-    from: "bytes"
-    to: "safe-base64"
-    await randomBytes 16
-
 generateRoom = ({title, blurb, host}) ->
   profile = await Profile.current
-  {publicKeys, data: {nickname}} = profile
-  address = await generateAddress()
+  {address, publicKeys, data: {nickname}} = profile
   {title, blurb, host: nickname, address, publicKeys}
 
 initialize =
@@ -37,6 +27,7 @@ initialize =
   flow [
     use Fetch.client mode: "cors"
     discover "https://http-test.dashkite.com"
+    # discover "https://storm-api.dashkite.com"
   ]
 
 Key =
@@ -57,42 +48,76 @@ Key =
 Room =
 
   create:
+
     flow [
       generateRoom
       initialize
       resource "rooms"
-      cast content, [ property "data" ]
+      from [
+        property "data"
+        content
+      ]
       method "post"
-      cast authorize, [ sigil ]
+      from [
+        sigil "http-test.dashkite.com"
+        authorize
+      ]
       request
       json
-      cast grants, [ Key.get ]
+      from [
+        Key.get
+        grants "http-test.dashkite.com"
+      ]
       property "json"
     ]
 
-  Title:
-    put:
-      flow [
-        initialize
-        resource "title"
-        method "put"
-        cast parameters, [ data ({address}) -> {address} ]
-        cast content, [ data ({title}) -> {title} ]
-        cast authorize, [ claim ]
-        request
+  patch:
+    flow [
+      initialize
+      resource "room"
+      method "patch"
+      from [
+        data [ "address" ]
+        parameters
       ]
+      from [
+        data [ "title" ]
+        content
+      ]
+      from [
+        claim "http-test.dashkite.com"
+        authorize
+      ]
+      request
+    ]
 
   Messages:
+
     get:
       flow [
         initialize
         resource "messages"
         method "get"
-        cast parameters, [ property "data" ]
-        cast authorize, [ claim ]
+        from [
+          property "data"
+          parameters
+        ]
+        from [
+          claim "http-test.dashkite.com"
+          authorize
+        ]
         request
         json
         property "json"
       ]
+
+    # this should throw b/c put is not supported
+    put:
+      flow [
+        initialize
+        resource "messages"
+        method "put"
+      ]
+
 
 export default Room

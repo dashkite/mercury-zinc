@@ -7,22 +7,22 @@ import failure from "./failure"
 Zinc =
 
   grants: do ({profile} = {}) ->
-    curry rtee (key, context) ->
-      profile = await Profile.current
+    curry rtee (host, key, context) ->
+      profile = await Profile.getAdjunct host
       throw failure "no current profile" if !profile?
       profile.receive key, context.json.directory
 
   claimP: do ({profile, path, claim} = {}) ->
-    ({url, parameters, method}) ->
-      profile = await Profile.current
+    curry (host, {url, parameters, method}) ->
+      profile = await Profile.getAdjunct host
       throw failure "no current profile" if !profile?
       # TODO consider another term for path
       path = url.pathname + url.search
       (profile.lookup {path, parameters, method})?
 
   claim: do ({profile, path, claim} = {}) ->
-    ({url, parameters, method}) ->
-      profile = await Profile.current
+    curry (host, {url, parameters, method}) ->
+      profile = await Profile.getAdjunct host
       throw failure "no current profile" if !profile?
       # TODO consider another term for path
       path = url.pathname + url.search
@@ -33,8 +33,8 @@ Zinc =
           no matching grant for [#{method} #{path}]"
 
   sigil: do ({profile, declaration} = {}) ->
-    ({url, method, body}) ->
-      profile = await Profile.current
+    curry (host, {url, method, body}) ->
+      profile = await Profile.getAdjunct host
       throw failure "no current profile" if !profile?
       declaration = sign profile.keyPairs.signature,
         Message.from "utf8",
