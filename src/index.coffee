@@ -15,7 +15,7 @@ Zinc =
   claimP: do ({profile, path, claim} = {}) ->
     curry (host, {url, parameters, method}) ->
       profile = await Profile.getAdjunct host
-      throw failure "no current profile" if !profile?
+      return false if !profile?
       # TODO consider another term for path
       path = url.pathname + url.search
       (profile.lookup {path, parameters, method})?
