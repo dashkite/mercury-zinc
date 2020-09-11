@@ -1,6 +1,6 @@
 {
   "name": "@dashkite/mercury-zinc",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Mercury (HTTP) combinators for use with Zinc.",
   "keywords": [],
   "homepage": "https://github.com/dashkite/mercury-zinc#readme",
