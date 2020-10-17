@@ -35,8 +35,8 @@
     "test": "p9k test"
   },
   "dependencies": {
-    "@dashkite/zinc": "^0.1.2",
-    "@pandastrike/garden": "^8.0.1"
+    "@dashkite/zinc": "0.1.3",
+    "@pandastrike/garden": "8.0.1"
   },
   "devDependencies": {
     "@dashkite/mercury": "0.0.20",
