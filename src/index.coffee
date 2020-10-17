@@ -1,4 +1,4 @@
-import {curry, rtee} from "panda-garden"
+import {curry, rtee} from "@pandastrike/garden"
 import Profile from "@dashkite/zinc"
 import failure from "./failure"
 
