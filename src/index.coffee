@@ -1,4 +1,4 @@
-import {curry, rtee} from "panda-garden"
+import * as _ from "@dashkite/joy"
 import Profile from "@dashkite/zinc"
 import failure from "./failure"
 
@@ -7,13 +7,13 @@ import failure from "./failure"
 Zinc =
 
   grants: do ({profile} = {}) ->
-    curry rtee (host, key, context) ->
+    _.curry _.rtee (host, key, context) ->
       profile = await Profile.getAdjunct host
       throw failure "no current profile" if !profile?
       profile.receive key, context.json.directory
 
   claimP: do ({profile, path, claim} = {}) ->
-    curry (host, {url, parameters, method}) ->
+    _.curry (host, {url, parameters, method}) ->
       profile = await Profile.getAdjunct host
       return false if !profile?
       # TODO consider another term for path
@@ -21,7 +21,7 @@ Zinc =
       (profile.lookup {path, parameters, method})?
 
   claim: do ({profile, path, claim} = {}) ->
-    curry (host, {url, parameters, method}) ->
+    _.curry (host, {url, parameters, method}) ->
       profile = await Profile.getAdjunct host
       throw failure "no current profile" if !profile?
       # TODO consider another term for path
@@ -33,7 +33,7 @@ Zinc =
           no matching grant for [#{method} #{path}]"
 
   sigil: do ({profile, declaration} = {}) ->
-    curry (host, {url, method, body}) ->
+    _.curry (host, {url, method, body}) ->
       profile = await Profile.getAdjunct host
       throw failure "no current profile" if !profile?
       declaration = sign profile.keyPairs.signature,

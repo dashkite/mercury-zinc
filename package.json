@@ -14,28 +14,37 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "author": "",
   "main": "build/npm/src/index.js",
-  "directories": {
-    "test": "test"
+  "exports": {
+    ".": {
+      "import": "./build/import/src/index.js",
+      "node": "./build/node/src/index.js"
+    },
+    "./*": {
+      "import": "./build/import/src/*.js",
+      "node": "./build/node/src/*.js"
+    }
   },
   "files": [
-    "build/npm/src"
+    "build/import/src",
+    "build/node/src",
+    "src"
   ],
   "scripts": {
-    "test": "p9k test"
+    "test": "genie test"
   },
   "devDependencies": {
-    "@dashkite/mercury": "0.0.20",
-    "@dashkite/mercury-sky": "0.0.4",
+    "@dashkite/genie": "^0.1.0",
+    "@dashkite/masonry": "^0.7.1",
+    "@dashkite/mercury": "file:../mercury",
+    "@dashkite/mercury-sky": "file:../mercury-sky",
     "amen": "^3.0.0",
-    "fake-indexeddb": "^3.0.0",
-    "faker": "^4.1.0",
-    "node-fetch": "^2.6.0",
-    "panda-9000": "^5.0.2",
-    "panda-builder": "^4.0.13",
-    "source-map-support": "^0.5.19"
+    "fake-indexeddb": "^3.1.2",
+    "faker": "^5.5.3",
+    "node-fetch": "^2.6.1",
+    "panda-quill": "^5.0.0"
   },
   "dependencies": {
-    "@dashkite/zinc": "^0.1.0",
-    "panda-garden": "^5.0.0"
+    "@dashkite/joy": "^0.1.7",
+    "@dashkite/zinc": "^0.1.3"
   }
 }
