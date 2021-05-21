@@ -32,8 +32,8 @@
     "@babel/core": "^7.14.3",
     "@dashkite/genie": "^0.3.3",
     "@dashkite/genie-presets": "^0.1.4",
-    "@dashkite/mercury": "file:../mercury",
-    "@dashkite/mercury-sky": "file:../mercury-sky",
+    "@dashkite/mercury": "^0.2.2",
+    "@dashkite/mercury-sky": "^0.0.6",
     "amen": "^3.0.0",
     "coffeescript": "^2.5.1",
     "fake-indexeddb": "^3.1.2",
@@ -44,7 +44,7 @@
   "dependencies": {
     "@dashkite/joy": "^0.3.3",
     "@dashkite/kaiko": "file:../kaiko",
-    "@dashkite/katana": "file:../katana",
-    "@dashkite/zinc": "file:../zinc"
+    "@dashkite/katana": "^0.4.6",
+    "@dashkite/zinc": "^0.1.3"
   }
 }
