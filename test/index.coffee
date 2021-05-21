@@ -1,49 +1,55 @@
 import assert from "assert"
 import {print, test, success} from "amen"
+import * as log from "@dashkite/kaiko"
 
 import * as _ from "@dashkite/joy"
-# import "fake-indexeddb/auto"
+import * as k from "@dashkite/katana"
+
+# set up db and local storage that zinc depends upon
+import "fake-indexeddb/auto"
+import "./local-storage"
+
+import Profile from "@dashkite/zinc"
+
 import fetch from "node-fetch"
-# import "./custom-event"
-# import "./local-storage"
+globalThis.fetch ?= fetch
+global.Request ?= fetch.Request
+
+# we want to generate fake data for our test
 import faker from "faker"
-# import Profile from "@dashkite/zinc"
 
 import {
   Room
   Key
-} from "./room"
+} from "./resources"
 
-globalThis.fetch ?= fetch
-global.Request ?= fetch.Request
+do ({room} = {})->
 
-do ->
+  log.level "debug"
+  process.on "exit", (code) ->
+    if code != 0 then log.write process.stdout
 
-  # Profile.current = await Profile.create "http-test.dashkite.com",
-  #   nickname: faker.internet.userName()
+  Profile.current = await Profile.create "kiki-api.dashkite.com",
+    nickname: faker.internet.userName()
 
-  print await test "Mercury Sky: HTTP Combinators For Sky",  [
+  print await test "Mercury Zinc: HTTP Combinators For Zinc",  [
 
-    test
-      description: "sky test"
-      wait: false
+    await test
+      description: "create room"
+      wait: 5000
       ->
-        console.log await Key.get "https://kiki-api.dashkite.com"
-        # {room} = await Room.create
-        #   title: titleCase faker.lorem.words()
-        #   blurb: faker.lorem.sentence()
-        # assert room.created
-        #
-        # await Room.patch
-        #   title: titleCase faker.lorem.words()
-        #   address: room.address
-        #
-        # messages = await Room.Messages.get
-        #   address: room.address
-        #   after: (new Date).toISOString()
-        # assert Array.isArray messages
-        #
-        # assert.rejects (-> Room.Messages.put()), /not allowed/
+        {room} = await Room.create
+          title: _.titleCase faker.lorem.words()
+          blurb: faker.lorem.sentence()
+        assert room.created
+
+    await test
+      description: "update room"
+      wait: 5000
+      ->
+        response = await Room.patch
+          title: _.titleCase faker.lorem.words()
+          address: room.address
   ]
 
   process.exit if success then 0 else 1

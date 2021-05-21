@@ -30,8 +30,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
-    "@dashkite/genie": "file:../genie",
-    "@dashkite/genie-presets": "file:../genie-presets",
+    "@dashkite/genie": "^0.3.3",
+    "@dashkite/genie-presets": "^0.1.3",
     "@dashkite/mercury": "file:../mercury",
     "@dashkite/mercury-sky": "file:../mercury-sky",
     "amen": "^3.0.0",
@@ -42,7 +42,7 @@
     "panda-quill": "^5.0.0"
   },
   "dependencies": {
-    "@dashkite/joy": "^0.3.0",
+    "@dashkite/joy": "^0.3.3",
     "@dashkite/kaiko": "file:../kaiko",
     "@dashkite/katana": "file:../katana",
     "@dashkite/zinc": "file:../zinc"
