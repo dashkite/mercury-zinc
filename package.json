@@ -1,6 +1,6 @@
 {
   "name": "@dashkite/mercury-zinc",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "description": "Mercury (HTTP) combinators for use with Zinc.",
   "keywords": [],
   "homepage": "https://github.com/dashkite/mercury-zinc#readme",
@@ -12,7 +12,16 @@
     "url": "git+https://github.com/dashkite/mercury-zinc.git"
   },
   "license": "SEE LICENSE IN LICENSE.md",
-  "author": "",
+  "contributors": [
+    {
+      "name": "Dan Yoder",
+      "email": "dan@pandastrike.com"
+    },
+    {
+      "name": "David Harper",
+      "email": "david@pandastrike.com"
+    }
+  ],
   "main": "build/node/src/index.js",
   "exports": {
     ".": {
@@ -25,8 +34,18 @@
     "build/node/src",
     "src"
   ],
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
     "test": "genie test"
+  },
+  "dependencies": {
+    "@dashkite/joy": "^0.3.3",
+    "@dashkite/katana": "^0.4.7",
+    "@dashkite/mercury": "^0.2.3",
+    "@dashkite/mercury-sky": "^0.1.1",
+    "@dashkite/zinc": "file:../zinc"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
@@ -38,12 +57,5 @@
     "faker": "^5.5.3",
     "node-fetch": "^2.6.1",
     "panda-quill": "^5.0.0"
-  },
-  "dependencies": {
-    "@dashkite/joy": "^0.3.3",
-    "@dashkite/katana": "^0.4.7",
-    "@dashkite/mercury": "^0.2.3",
-    "@dashkite/mercury-sky": "^0.1.1",
-    "@dashkite/zinc": "file:../zinc"
   }
 }
