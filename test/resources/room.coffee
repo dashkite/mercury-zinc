@@ -1,6 +1,5 @@
 import * as _ from "@dashkite/joy"
 import * as k from "@dashkite/katana"
-import * as log from "@dashkite/kaiko"
 import * as ks from "@dashkite/katana/sync"
 import * as m from "@dashkite/mercury"
 import Profile from "@dashkite/zinc"
@@ -41,7 +40,6 @@ Room =
 
     _.flow [
       m.request [
-        log.debug
         s.discover "https://kiki-api.dashkite.com"
         _.pipe [
           s.resource "room"

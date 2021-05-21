@@ -1,6 +1,5 @@
 import * as _ from "@dashkite/joy"
 import * as k from "@dashkite/katana"
-import * as log from "@dashkite/kaiko"
 import * as ks from "@dashkite/katana/sync"
 import * as m from "@dashkite/mercury"
 import Profile from "@dashkite/zinc"

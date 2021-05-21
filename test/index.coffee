@@ -1,6 +1,5 @@
 import assert from "assert"
 import {print, test, success} from "amen"
-import * as log from "@dashkite/kaiko"
 
 import * as _ from "@dashkite/joy"
 import * as k from "@dashkite/katana"
@@ -24,10 +23,6 @@ import {
 } from "./resources"
 
 do ({room} = {})->
-
-  log.level "debug"
-  process.on "exit", (code) ->
-    if code != 0 then log.write process.stdout
 
   Profile.current = await Profile.create "kiki-api.dashkite.com",
     nickname: faker.internet.userName()
