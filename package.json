@@ -41,16 +41,16 @@
     "test": "genie test"
   },
   "dependencies": {
-    "@dashkite/joy": "^0.3.3",
-    "@dashkite/katana": "^0.4.7",
+    "@dashkite/joy": "^0.3.7",
+    "@dashkite/katana": "^0.4.8",
     "@dashkite/mercury": "^0.2.3",
     "@dashkite/mercury-sky": "^0.1.1",
     "@dashkite/zinc": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
-    "@dashkite/genie": "^0.3.3",
-    "@dashkite/genie-presets": "^0.1.5",
+    "@dashkite/genie": "^0.5.2",
+    "@dashkite/genie-presets": "^0.2.2",
     "amen": "^3.0.0",
     "coffeescript": "^2.5.1",
     "fake-indexeddb": "^3.1.2",
