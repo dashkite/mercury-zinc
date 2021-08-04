@@ -42,9 +42,9 @@
   "dependencies": {
     "@dashkite/joy": "^0.3.9",
     "@dashkite/katana": "^0.4.8",
-    "@dashkite/mercury": "^0.2.3",
-    "@dashkite/mercury-sky": "^0.1.1",
-    "@dashkite/zinc": "^0.2.0"
+    "@dashkite/mercury": "file:../mercury",
+    "@dashkite/mercury-sky": "file:../mercury-sky",
+    "@dashkite/zinc": "file:../zinc"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",

@@ -1,2 +1,2 @@
 export * from "./key"
-export * from "./room"
+export * from "./profiles"

@@ -17,34 +17,29 @@ global.Request ?= fetch.Request
 # we want to generate fake data for our test
 import faker from "faker"
 
-import {
-  Room
-  Key
-} from "./resources"
+import * as R from "./resources"
 
-do ({room} = {})->
+do ({room} = {}) ->
 
-  Profile.current = await Profile.create "kiki-api.dashkite.com",
-    nickname: faker.internet.userName()
+  nickname = faker.internet.userName()
+  profile = await Profile.create "breeze-development-api.dashkite.com",
+    { nickname }
+  Profile.current = profile
 
   print await test "Mercury Zinc: HTTP Combinators For Zinc",  [
 
     await test
-      description: "create room"
+      description: "create profile"
       wait: 5000
       ->
-        {room} = await Room.create
-          title: _.titleCase faker.lorem.words()
-          blurb: faker.lorem.sentence()
-        assert room.created
+        R.Profiles.create { profile, nickname }
 
     await test
-      description: "update room"
+      description: "delete profile"
       wait: 5000
       ->
-        response = await Room.patch
-          title: _.titleCase faker.lorem.words()
-          address: room.address
+        R.Profile.delete { nickname }
+
   ]
 
   process.exit if success then 0 else 1
