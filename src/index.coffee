@@ -1,5 +1,6 @@
 import * as _ from "@dashkite/joy"
-import * as K from "@dashkite/katana"
+import * as K from "@dashkite/katana/async"
+import * as Ks from "@dashkite/katana/sync"
 import Profile from "@dashkite/zinc"
 import failure from "./failure"
 
@@ -19,41 +20,52 @@ claimP = do ({profile, path, claim} = {}) ->
     path = url.pathname + url.search
     (profile.lookup {path, parameters, method})?
 
+# this is a slightly different variation than the one in Mercury
+# - it uses async katana ops because the combinators (claim and sigil)
+#   are async
+# - we don't use K.assign so we don't need Mercury's header combinators
+#   to read from the context
+# we maybe want to force them to read from the context, since Mercury
+# combinators don't mess with the stack
+
+setter = (f) ->
+  (value) ->
+    if K.isDaisho value
+      ((K.test _.isDefined, f) value)
+    else
+      _.pipe [ (K.push -> value), f ]
+
 claim = do ({profile, path, claim} = {}) ->
-  (host) ->
-    _.flow [
-      K.context
-      K.push ({url, parameters, method}) ->
-        profile = await Profile.getAdjunct host
-        throw failure "no current profile" if !profile?
-        # TODO consider another term for path
-        path = url.pathname + url.search
-        if (token = profile.exercise {path, parameters, method})?
-          "Capability #{token}"
-        else
-          console.warn "Mercury: Zinc: claim:
-            no matching grant for [#{method} #{path}]"
-      K.write "authorization"
-    ]
+  setter _.flow [
+    K.context
+    K.push ({url, parameters, method}, host) ->
+      profile = await Profile.getAdjunct host
+      throw failure "no current profile" if !profile?
+      # TODO consider another term for path
+      path = url.pathname + url.search
+      if (token = profile.exercise {path, parameters, method})?
+        "Capability #{token}"
+      else
+        console.warn "Mercury: Zinc: claim:
+          no matching grant for [#{method} #{path}]"
+  ]
 
 sigil = do ({profile, declaration} = {}) ->
-  (host) ->
-    _.flow [
-      K.context
-      K.push ({url, method, body}) ->
-        profile = await Profile.getAdjunct host
-        throw failure "no current profile" if !profile?
-        declaration = sign profile.keyPairs.signature,
-          Message.from "utf8",
-            JSON.stringify
-              method: method.toUpperCase()
-              path: url.pathname + url.search
-              date: new Date().toISOString()
-              hash: (hash Message.from "utf8", body).to "base64"
-        token = declaration.to "base64"
-        "Sigil #{token}"
-      K.write "authorization"
-    ]
+  setter _.flow [
+    K.context
+    K.push ({url, method, body}, host) ->
+      profile = await Profile.getAdjunct host
+      throw failure "no current profile" if !profile?
+      declaration = sign profile.keyPairs.signature,
+        Message.from "utf8",
+          JSON.stringify
+            method: method.toUpperCase()
+            path: url.pathname + url.search
+            date: new Date().toISOString()
+            hash: (hash Message.from "utf8", body).to "base64"
+      token = declaration.to "base64"
+      "Sigil #{token}"
+  ]
 
 export {
   grants
